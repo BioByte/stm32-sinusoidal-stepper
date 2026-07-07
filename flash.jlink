@@ -1,0 +1,8 @@
+device STM32F407VE
+if SWD
+speed 4000
+connect
+loadfile build/led_blink.elf
+r
+g
+exit

@@ -1,0 +1,23 @@
+{
+  "configurations": [
+    {
+      "name": "STM32",
+      "compilerPath": "arm-none-eabi-gcc",
+      "intelliSenseMode": "gcc-arm",
+      "cStandard": "c11",
+
+      "includePath": [
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/CMSIS/core/Include",
+        "${workspaceFolder}/CMSIS/device/Include",
+        "${workspaceFolder}/core",
+        "${workspaceFolder}/src"
+      ],
+
+      "defines": [
+        "STM32F407xx"
+      ]
+    }
+  ],
+  "version": 4
+}

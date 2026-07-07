@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "STM32 J-Link Debug",
+      "type": "cortex-debug",
+      "request": "launch",
+
+      "servertype": "jlink",
+
+      "device": "STM32F407VE",
+      "interface": "swd",
+
+      "serverpath": "C:/Program Files/SEGGER/JLink/JLinkGDBServerCL.exe",
+      "gdbTarget": "localhost:2331",
+
+      "cwd": "${workspaceFolder}",
+      "executable": "build/${workspaceFolderBasename}.elf",
+
+      "runToEntryPoint": "main",
+
+      "svdFile": "${workspaceFolder}/STM32F407.svd"
+    }
+  ]
+}
