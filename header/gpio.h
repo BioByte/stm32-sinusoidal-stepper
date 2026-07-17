@@ -1,16 +1,28 @@
+/******************************************************************************
+ * GPIO driver library Header file
+ *
+ * Provides basic GPIO configuration and pin control.
+ *
+ * This library is responsible only for configuring the GPIO registers.
+ * Peripheral-specific configuration (UART,SPI, I2C, TIM, etc.) 
+ * must be handled by the corresponding driver.
+ ******************************************************************************/
+
 #include "stm32f4xx.h"
 
+/// @brief GPIO configuration structure.
 typedef struct
 {   
-    GPIO_TypeDef *port;
-    uint8_t pin;
-    gpio_mode_t mode;
-    gpio_output_type_t type;
-    gpio_output_speed_type_t speed;
-    gpio_pull_type_t pull;
-    gpio_af_type_t af;
+    GPIO_TypeDef *port; //GPIO port (GPIOA, GPIOB, ..., GPIOH)
+    uint8_t pin; //GPIO pin number (0 to 15)
+    gpio_mode_t mode; // GPIO mode (Input, Output, Alternate Function or Analog)
+    gpio_output_type_t type; //Output type (Push-Pull or Open-Drain)
+    gpio_output_speed_type_t speed; //Output speed
+    gpio_pull_type_t pull; //Pull configuration (None, Pull-Up or Pull-Down)
+    gpio_af_type_t af; //Alternate Function selection (used only in AF mode)
 }gpio_config_t;
 
+/// @brief typedef enum for GPIO Mode config
 typedef enum{
 
     GPIO_MODE_INPUT,
@@ -20,6 +32,7 @@ typedef enum{
 
 }gpio_mode_t;
 
+/// @brief typedef enum for GPIO Push Pull/Open Drain config
 typedef enum{
 
     GPIO_OUTPUT_TYPE_PUSH_PULL,
@@ -27,6 +40,7 @@ typedef enum{
     
 }gpio_output_type_t;
 
+/// @brief typedef enum for GPIO Speed config
 typedef enum{
 
     GPIO_OUTPUT_SPEED_LOW,
@@ -36,6 +50,7 @@ typedef enum{
     
 }gpio_output_speed_type_t;
 
+/// @brief typedef enum for GPIO Pull Up/Down config
 typedef enum{
 
     GPIO_NO_PULL,
@@ -44,6 +59,7 @@ typedef enum{
     
 }gpio_pull_type_t;
 
+/// @brief typedef enum for GPIO AF config
 typedef enum{
 
     GPIO_AF0,
