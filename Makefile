@@ -74,6 +74,7 @@ $(OPT) \
 $(DEFINES)
 
 CFLAGS  := $(COMMON_FLAGS) -MMD -MP
+CFLAGS += -DHSE_VALUE=8000000U
 ASFLAGS := $(MCU)
 
 ###############################################################################

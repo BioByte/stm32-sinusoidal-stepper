@@ -1,6 +1,17 @@
 #include "stm32f4xx.h"
+#include "system_clock.h"
+#include "system_time.h"
+#include <stdbool.h>
 
 int main (void){
+
+    InitSystemClock();
+    InitSystemTime();
+
+    time_ms_t current_time = 0, timeout = 0, getSystemTimer_ms = 0;
+    bool toggle = true;
+
+    timeout = 1000;
 
     RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
 
@@ -30,14 +41,33 @@ int main (void){
     GPIOA->PUPDR &= ~(3 << (6 * 2));
     GPIOA->PUPDR &= ~(3 << (7 * 2));
 
+    while (1)
+    {
+        getSystemTimer_ms = getTime_ms();
+        if((getSystemTimer_ms - current_time)>=timeout){
+
+            current_time = getSystemTimer_ms;
+
+            if(toggle){
+            GPIOA->BSRR = (0x01 << (6 + 16));
+            GPIOA->BSRR = (0x01 << (7 + 16));
+            toggle = !toggle;
+            }
+            else{
+            GPIOA->BSRR = (0x01 << (6));
+            GPIOA->BSRR = (0x01 << (7));
+            toggle = !toggle;
+            }
+
+        }
+    }
+    
     //Reset PA6 and PA7 to enable the NMOS
     //As the PA6 and PA7 are configured as open drain, when set 1 in BSRR register, the output
     //leaves the port as high impedance. When reseting the port, the internal NMOS is enabled
     //and drives the pin to the GND, turning on the PA6 and PA7 LEDs
-    GPIOA->BSRR = (0x01 << (6 + 16));
-    GPIOA->BSRR = (0x01 << (7 + 16));
 
-    GPIOA->BSRR = (0x01 << (7));
+    //GPIOA->BSRR = (0x01 << (7));
 
     
     return 0;
