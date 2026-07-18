@@ -9,18 +9,7 @@
  ******************************************************************************/
 
 #include "stm32f4xx.h"
-
-/// @brief GPIO configuration structure.
-typedef struct
-{   
-    GPIO_TypeDef *port; //GPIO port (GPIOA, GPIOB, ..., GPIOH)
-    uint8_t pin; //GPIO pin number (0 to 15)
-    gpio_mode_t mode; // GPIO mode (Input, Output, Alternate Function or Analog)
-    gpio_output_type_t type; //Output type (Push-Pull or Open-Drain)
-    gpio_output_speed_type_t speed; //Output speed
-    gpio_pull_type_t pull; //Pull configuration (None, Pull-Up or Pull-Down)
-    gpio_af_type_t af; //Alternate Function selection (used only in AF mode)
-}gpio_config_t;
+#include "stdbool.h"
 
 /// @brief typedef enum for GPIO Mode config
 typedef enum{
@@ -80,3 +69,23 @@ typedef enum{
     GPIO_AF15,
 
 }gpio_af_type_t;
+
+/// @brief GPIO configuration structure.
+typedef struct
+{   
+    GPIO_TypeDef *port; //GPIO port (GPIOA, GPIOB, ..., GPIOH)
+    uint8_t pin; //GPIO pin number (0 to 15)
+    gpio_mode_t mode; // GPIO mode (Input, Output, Alternate Function or Analog)
+    gpio_output_type_t type; //Output type (Push-Pull or Open-Drain)
+    gpio_output_speed_type_t speed; //Output speed
+    gpio_pull_type_t pull; //Pull configuration (None, Pull-Up or Pull-Down)
+    gpio_af_type_t af; //Alternate Function selection (used only in AF mode)
+}gpio_config_t;
+
+void GPIO_Init(const gpio_config_t *config);
+void GPIO_EnableClock(const gpio_config_t *config);
+void GPIO_SetPin(const gpio_config_t *config);
+bool GPIO_ReadPin(const gpio_config_t *config);
+void GPIO_ResetPin(const gpio_config_t *config);
+void GPIO_WritePin(const gpio_config_t *config, bool state);
+void GPIO_TogglePin(const gpio_config_t *config);

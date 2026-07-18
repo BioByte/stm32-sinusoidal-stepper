@@ -60,7 +60,7 @@ LDSCRIPT := linker/STM32F407XX_FLASH.ld
 # Optimization flags
 ###############################################################################
 
-OPT := -O2
+OPT := -Og -g3
 
 COMMON_FLAGS := $(MCU) \
 $(OPT) \

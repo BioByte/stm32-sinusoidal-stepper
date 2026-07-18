@@ -2,7 +2,7 @@ device STM32F407VE
 if SWD
 speed 4000
 connect
-loadfile build/led_blink.elf
+loadfile build/stm32-sinusoidal-stepper.elf
 r
 g
 exit

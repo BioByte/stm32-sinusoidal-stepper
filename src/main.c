@@ -2,6 +2,7 @@
 #include "system_clock.h"
 #include "system_time.h"
 #include <stdbool.h>
+#include "gpio.h"
 
 int main (void){
 
@@ -9,37 +10,38 @@ int main (void){
     InitSystemTime();
 
     time_ms_t current_time = 0, timeout = 0, getSystemTimer_ms = 0;
-    bool toggle = true;
 
     timeout = 1000;
 
-    RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
+    gpio_config_t LED1 = {
 
-    //Clean MODER register for PA6 and PA7
-    GPIOA->MODER &= ~(3 << (6 * 2));
-    GPIOA->MODER &= ~(3 << (7 * 2));
+        .port = GPIOA,
+        .pin = 6,
+        .mode = GPIO_MODE_OUTPUT,
+        .type = GPIO_OUTPUT_TYPE_OPEN_DRAIN,
+        .speed = GPIO_OUTPUT_SPEED_MEDIUM,
+        .pull = GPIO_NO_PULL,
 
-    //Set PA6 and PA7 as output mode
-    GPIOA->MODER |= (1 << (6 * 2));
-    GPIOA->MODER |= (1 << (7 * 2)); 
+    };
 
-    //Reset PA6 and PA7 pins
-    GPIOA->OTYPER &= ~(1 << 6);    
-    GPIOA->OTYPER &= ~(1 << 7);
+        gpio_config_t LED2 = {
 
-    //Set PA6 and PA7 as open drain pins
-    GPIOA->OTYPER |= 1 << 6;    
-    GPIOA->OTYPER |= 1 << 7;
+        .port = GPIOA,
+        .pin = 7,
+        .mode = GPIO_MODE_OUTPUT,
+        .type = GPIO_OUTPUT_TYPE_OPEN_DRAIN,
+        .speed = GPIO_OUTPUT_SPEED_MEDIUM,
+        .pull = GPIO_NO_PULL,
 
-    //Reset PA6 and PA7 speed register and set them to medium speed
-    GPIOA->OSPEEDR &= ~(3 << (6 * 2));
-    GPIOA->OSPEEDR &= ~(3 << (7 * 2));
-    GPIOA->OSPEEDR |= (1 << (6 * 2));
-    GPIOA->OSPEEDR |= (1 << (7 * 2));
+    };
 
-    //No pull-up/pull-down for PA6 and PA7
-    GPIOA->PUPDR &= ~(3 << (6 * 2));
-    GPIOA->PUPDR &= ~(3 << (7 * 2));
+    GPIO_EnableClock(&LED1);
+
+    GPIO_Init(&LED1);
+    GPIO_Init(&LED2);
+
+    GPIO_SetPin(&LED1);
+    GPIO_ResetPin(&LED2);
 
     while (1)
     {
@@ -47,28 +49,10 @@ int main (void){
         if((getSystemTimer_ms - current_time)>=timeout){
 
             current_time = getSystemTimer_ms;
-
-            if(toggle){
-            GPIOA->BSRR = (0x01 << (6 + 16));
-            GPIOA->BSRR = (0x01 << (7 + 16));
-            toggle = !toggle;
-            }
-            else{
-            GPIOA->BSRR = (0x01 << (6));
-            GPIOA->BSRR = (0x01 << (7));
-            toggle = !toggle;
-            }
-
+            GPIO_TogglePin(&LED1);
+            GPIO_TogglePin(&LED2);
         }
     }
-    
-    //Reset PA6 and PA7 to enable the NMOS
-    //As the PA6 and PA7 are configured as open drain, when set 1 in BSRR register, the output
-    //leaves the port as high impedance. When reseting the port, the internal NMOS is enabled
-    //and drives the pin to the GND, turning on the PA6 and PA7 LEDs
-
-    //GPIOA->BSRR = (0x01 << (7));
-
     
     return 0;
 }

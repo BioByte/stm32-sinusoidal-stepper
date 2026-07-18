@@ -99,3 +99,13 @@ void GPIO_WritePin(const gpio_config_t *config, bool state){
         GPIO_ResetPin(config);
     }
 }
+
+/// @brief Toggle the selected GPIO pin state
+/// @param config Pointer to the GPIO configuration structure
+/// @note This operation performs a read-modify-write on the ODR register
+///       and is therefore not atomic
+void GPIO_TogglePin(const gpio_config_t *config){
+
+    config->port->ODR ^= (1U << config->pin);
+
+}
