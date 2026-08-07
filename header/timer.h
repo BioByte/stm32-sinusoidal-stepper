@@ -5,10 +5,10 @@
 /// @brief Center-aligned mode selection. Set CMS bits in TIMx_CR1 register
 typedef enum timer_mode{
 
-    TIMER_EDGE_ALLIGNED_MODE,
-    TIMER_CENTER_ALLIGNED_MODE_1,
-    TIMER_CENTER_ALLIGNED_MODE_2,
-    TIMER_CENTER_ALLIGNED_MODE_3,
+    TIMER_EDGE_ALIGNED_MODE,
+    TIMER_CENTER_ALIGNED_MODE_1,
+    TIMER_CENTER_ALIGNED_MODE_2,
+    TIMER_CENTER_ALIGNED_MODE_3,
 
 }timer_mode_t;
 
@@ -44,7 +44,7 @@ typedef enum cc_config_mode{
 
 }cc_config_mode_t;
 
-/// @brief Select the polarity by writing the CCxP bit in TIMx_CCER register
+/// @brief Select the polarity by writing the CCxP and CCxNP bits in TIMx_CCER register
 typedef enum cc_output_polarity_config_mode{
 
     CC_OUTPUT_POLARITY_HIGH,
@@ -52,6 +52,13 @@ typedef enum cc_output_polarity_config_mode{
 
 }cc_output_polarity_config_mode_t;
 
+/// @brief Enable the compare capture signal, writing CCxE and CCxNE bits in TIMx_CCER register
+typedef enum cc_output_enable{
+
+    CC_OUTPUT_DISABLED,
+    CC_OUTPUT_ENABLE,
+
+}cc_output_enable_t;
 
 /// @brief Select the output compare mode. Set OCxM bits in TIMx_CCMRx bits
 typedef enum oc_config_mode{
@@ -70,7 +77,6 @@ typedef enum oc_config_mode{
 
 typedef struct TIM_Base_Config{
 
-    TIM_TypeDef *timer;
     timer_mode_t timer_mode;
     slave_mode_t slave_mode;
     timer_counter_direction_mode_t counter_direction;
@@ -90,6 +96,9 @@ typedef struct TIM_OC_Config{
         //register. TIMx_CCR1 preload value is loaded in the active register at each update event.
     bool oc_fast_enable;//used to accelerate the effect of an event on the trigger in input on the CC output
     cc_output_polarity_config_mode_t cc_output_polarity;
+    cc_output_polarity_config_mode_t cc_complementary_output_polarity;
+    cc_output_enable_t cc_output_enable;
+    cc_output_enable_t cc_complementary_output_enable;
     uint16_t compare; //TIMx_CCRx register;
 
 }TIM_OC_Config_t;
@@ -106,3 +115,46 @@ typedef struct TIM_BDTR_Config{
     uint8_t DTG; //Dead-Time generator Setup
 
 }TIM_BDTR_Config_t; 
+
+typedef enum TIM_Channel{
+
+    TIM_CHANNEL_1,
+    TIM_CHANNEL_2,
+    TIM_CHANNEL_3,
+    TIM_CHANNEL_4,
+
+}TIM_Channel_t;
+
+
+typedef struct TIM_OC_Channel_Config{
+
+    TIM_OC_Config_t channel[4];
+
+}TIM_OC_Channel_Config_t;
+
+
+typedef struct TIM_Handle{
+
+    TIM_TypeDef *timer;
+    
+    TIM_Base_Config_t base;
+
+    TIM_OC_Channel_Config_t channels;
+
+    TIM_BDTR_Config_t bdtr;
+
+}TIM_Handle_t;
+
+void TIM_HWClockEnable(const TIM_Handle_t *tim_handle);
+
+void TIM_BaseInit(const TIM_Handle_t *tim_handle);
+
+void TIM_OCInit(const TIM_Handle_t *tim_handle);
+
+void TIM_BDTRInit(const TIM_Handle_t *tim_handle);
+
+void TIM_Start(const TIM_Handle_t *tim_handle);
+
+void TIM_Stop(const TIM_Handle_t *tim_handle);
+
+void TIM_UpdateCompare(const TIM_Handle_t *tim_handle, enum TIM_CHANNEL channel, uint16_t compare);
