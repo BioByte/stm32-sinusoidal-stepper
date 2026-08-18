@@ -149,7 +149,7 @@ void TIM_HWClockEnable(const TIM_Handle_t *tim_handle);
 
 void TIM_BaseInit(const TIM_Handle_t *tim_handle);
 
-void TIM_OCInit(const TIM_Handle_t *tim_handle);
+void TIM_OCInit(const TIM_Handle_t *tim_handle, TIM_Channel_t channel);
 
 void TIM_BDTRInit(const TIM_Handle_t *tim_handle);
 
@@ -157,4 +157,4 @@ void TIM_Start(const TIM_Handle_t *tim_handle);
 
 void TIM_Stop(const TIM_Handle_t *tim_handle);
 
-void TIM_UpdateCompare(const TIM_Handle_t *tim_handle, enum TIM_CHANNEL channel, uint16_t compare);
+void TIM_UpdateCompare(const TIM_Handle_t *tim_handle, TIM_Channel_t channel, uint16_t compare);
