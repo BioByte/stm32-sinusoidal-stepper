@@ -158,3 +158,8 @@ void TIM_Start(const TIM_Handle_t *tim_handle);
 void TIM_Stop(const TIM_Handle_t *tim_handle);
 
 void TIM_UpdateCompare(const TIM_Handle_t *tim_handle, TIM_Channel_t channel, uint16_t compare);
+
+void TIM_MasterOCEnable(const TIM_Handle_t *tim_handle);
+
+void TIM_MasterOCDisable(const TIM_Handle_t *tim_handle);
+

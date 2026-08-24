@@ -52,8 +52,7 @@ void TIM_BaseInit(const TIM_Handle_t *tim_handle){
 
 void TIM_OCInit(const TIM_Handle_t *tim_handle, TIM_Channel_t channel){
 
-    if(tim_handle->timer == TIM1 || tim_handle->timer == TIM8){
-        switch (channel)
+    switch (channel)
         {
         case TIM_CHANNEL_1:
 
@@ -136,7 +135,6 @@ void TIM_OCInit(const TIM_Handle_t *tim_handle, TIM_Channel_t channel){
         
         default:
             break;
-        }
     }
 }
 
@@ -190,5 +188,17 @@ void TIM_UpdateCompare(const TIM_Handle_t *tim_handle, TIM_Channel_t channel, ui
         default:
             break;
     }
+
+}
+
+void TIM_MasterOCEnable(const TIM_Handle_t *tim_handle){
+
+    tim_handle->timer->BDTR |= TIM_BDTR_MOE_Msk;
+
+}
+
+void TIM_MasterOCDisable(const TIM_Handle_t *tim_handle){
+
+    tim_handle->timer->BDTR &= ~TIM_BDTR_MOE_Msk;
 
 }
