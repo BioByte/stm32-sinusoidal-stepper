@@ -42,8 +42,10 @@ void TIM_BaseInit(const TIM_Handle_t *tim_handle){
         tim_handle->timer->CR1 &= ~(TIM_CR1_CMS_Msk | TIM_CR1_DIR_Msk);
         tim_handle->timer->SMCR &= ~(TIM_SMCR_SMS_Msk);
         
-    
-        tim_handle->timer->CR1 |= (tim_handle->base.timer_mode << TIM_CR1_CMS_Pos) | (tim_handle->base.counter_direction << TIM_CR1_DIR_Pos);
+        tim_handle->timer->CR1 |= (tim_handle->base.timer_mode << TIM_CR1_CMS_Pos);
+        if(tim_handle->base.timer_mode == TIMER_EDGE_ALIGNED_MODE){
+            tim_handle->timer->CR1 |= (tim_handle->base.counter_direction << TIM_CR1_DIR_Pos);
+        }
         tim_handle->timer->PSC = tim_handle->base.prescaler;
         tim_handle->timer->ARR = tim_handle->base.period;
         tim_handle->timer->SMCR |= tim_handle->base.slave_mode << TIM_SMCR_SMS_Pos;

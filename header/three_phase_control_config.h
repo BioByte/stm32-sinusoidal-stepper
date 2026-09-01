@@ -85,10 +85,10 @@ static const three_phase_channels_t PhaseChannels = {
 
     .timer = TIM1,
     .base = {
-        .timer_mode = TIMER_EDGE_ALIGNED_MODE,
-        .counter_direction = TIMER_UPCOUNTER_MODE,
+        .timer_mode = TIMER_CENTER_ALIGNED_MODE_1,
+        //.counter_direction = TIMER_UPCOUNTER_MODE,
         .prescaler = 0, //168MHz
-        .period = 6720-1, //168MHz/6720 = 25kHz
+        .period = 3360-1, //168MHz/3360 = 25kHz for center aligned mode
         .slave_mode = SLAVE_MODE_DISABLE,
     },
     .channels = {
@@ -100,7 +100,7 @@ static const three_phase_channels_t PhaseChannels = {
             .cc_output_polarity = CC_OUTPUT_POLARITY_HIGH,
             .cc_output_enable = CC_OUTPUT_ENABLE,
             .cc_complementary_output_enable = CC_OUTPUT_DISABLED,
-            .compare = 6720*0.75, //50% duty cycle
+            .compare = 3360*0.5, //50% duty cycle
         },
         .channel[TIM_CHANNEL_2] = {
             .cc_mode = CC_OUTPUT_MODE,
@@ -110,7 +110,7 @@ static const three_phase_channels_t PhaseChannels = {
             .cc_output_polarity = CC_OUTPUT_POLARITY_HIGH,
             .cc_output_enable = CC_OUTPUT_ENABLE,
             .cc_complementary_output_enable = CC_OUTPUT_DISABLED,
-            .compare = 6720*0.75, //50% duty cycle
+            .compare = 6720*0.5, //50% duty cycle
         },
         .channel[TIM_CHANNEL_3] = {
             .cc_mode = CC_OUTPUT_MODE,
@@ -120,7 +120,7 @@ static const three_phase_channels_t PhaseChannels = {
             .cc_output_polarity = CC_OUTPUT_POLARITY_HIGH,
             .cc_output_enable = CC_OUTPUT_ENABLE,
             .cc_complementary_output_enable = CC_OUTPUT_DISABLED,
-            .compare = 6720*0.75, //50% duty cycle
+            .compare = 6720*0.25, //50% duty cycle
         },
     },
     .bdtr = {

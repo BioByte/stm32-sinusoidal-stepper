@@ -17,6 +17,7 @@ void ThreePhaseControl_Init(void){
     TIM_OCInit(&pwm_handle, PhaseChannels.ch[WPHASE]);
 
     TIM_BDTRInit(&pwm_handle);
+    ThreePhaseControl_MasterOutputEnable();
     TIM_Start(&pwm_handle);
 
 }
@@ -40,14 +41,14 @@ void ThreePhaseControl_Stop(void){
 
 }
 
-void ThreePhaseControl_EnableOutput(void){
+void ThreePhaseControl_MasterOutputEnable(void){
 
     pwm_handle.bdtr.MOE = true;
     TIM_MasterOCEnable(&pwm_handle);
 
 }
 
-void ThreePhaseControl_DisableOutput(void){
+void ThreePhaseControl_MasterOutputDisable(void){
 
     pwm_handle.bdtr.MOE = false;
     TIM_MasterOCDisable(&pwm_handle);

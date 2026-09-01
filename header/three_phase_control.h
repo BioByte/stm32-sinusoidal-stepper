@@ -15,5 +15,5 @@ void ThreePhaseControl_Init(void);
 void ThreePhaseControl_UpdatePhase(motor_phases_t phase, uint16_t compare);
 void ThreePhaseControl_Start(void);
 void ThreePhaseControl_Stop(void);
-void ThreePhaseControl_EnableOutput(void);
-void ThreePhaseControl_DisableOutput(void);
+void ThreePhaseControl_MasterOutputEnable(void);
+void ThreePhaseControl_MasterOutputDisable(void);
