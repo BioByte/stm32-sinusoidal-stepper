@@ -82,6 +82,7 @@ typedef struct TIM_Base_Config{
     timer_counter_direction_mode_t counter_direction;
     uint16_t prescaler; //The counter clock frequency (fCK_PSC / (PSC[15:0] + 1)) TIMx_PSC register
     uint16_t period; //TIMx_ARR register;
+    bool enable_update_interrupt; //TIMx_DIER register, UIE bit
 
 }TIM_Base_Config_t;
 
@@ -162,4 +163,8 @@ void TIM_UpdateCompare(const TIM_Handle_t *tim_handle, TIM_Channel_t channel, ui
 void TIM_MasterOCEnable(const TIM_Handle_t *tim_handle);
 
 void TIM_MasterOCDisable(const TIM_Handle_t *tim_handle);
+
+typedef void (*volatile TIM_Callback_t)(void);
+
+void TIM_CallbackRegister(TIM_Callback_t callback);
 

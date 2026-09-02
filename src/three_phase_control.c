@@ -18,6 +18,8 @@ void ThreePhaseControl_Init(void){
 
     TIM_BDTRInit(&pwm_handle);
     ThreePhaseControl_MasterOutputEnable();
+    NVIC_SetPriority(TIM1_UP_TIM10_IRQn, 2);
+    NVIC_EnableIRQ(TIM1_UP_TIM10_IRQn);
     TIM_Start(&pwm_handle);
 
 }

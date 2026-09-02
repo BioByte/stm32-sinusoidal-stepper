@@ -90,6 +90,7 @@ static const three_phase_channels_t PhaseChannels = {
         .prescaler = 0, //168MHz
         .period = 3360-1, //168MHz/3360 = 25kHz for center aligned mode
         .slave_mode = SLAVE_MODE_DISABLE,
+        .enable_update_interrupt = true, //Enable update interrupt for TIM1_UP_TIM10_IRQn
     },
     .channels = {
         .channel[TIM_CHANNEL_1] = {

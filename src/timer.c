@@ -1,6 +1,7 @@
 #include "stm32f407xx.h"
 #include "timer.h"
 
+TIM_Callback_t tim_callback = 0;
 
 void TIM_HWClockEnable(const TIM_Handle_t *tim_handle){
 
@@ -43,13 +44,19 @@ void TIM_BaseInit(const TIM_Handle_t *tim_handle){
         tim_handle->timer->SMCR &= ~(TIM_SMCR_SMS_Msk);
         
         tim_handle->timer->CR1 |= (tim_handle->base.timer_mode << TIM_CR1_CMS_Pos);
+
         if(tim_handle->base.timer_mode == TIMER_EDGE_ALIGNED_MODE){
             tim_handle->timer->CR1 |= (tim_handle->base.counter_direction << TIM_CR1_DIR_Pos);
         }
+
         tim_handle->timer->PSC = tim_handle->base.prescaler;
         tim_handle->timer->ARR = tim_handle->base.period;
         tim_handle->timer->SMCR |= tim_handle->base.slave_mode << TIM_SMCR_SMS_Pos;
 
+        if(tim_handle->base.enable_update_interrupt){
+            tim_handle->timer->CR1 |= TIM_CR1_URS_Msk; // Only counter overflow/underflow generates an update interrupt
+            tim_handle->timer->DIER |= TIM_DIER_UIE_Msk; // Enable update interrupt
+        }
 }
 
 void TIM_OCInit(const TIM_Handle_t *tim_handle, TIM_Channel_t channel){
@@ -203,4 +210,20 @@ void TIM_MasterOCDisable(const TIM_Handle_t *tim_handle){
 
     tim_handle->timer->BDTR &= ~TIM_BDTR_MOE_Msk;
 
+}
+
+void TIM_CallbackRegister(TIM_Callback_t callback){
+
+    tim_callback = callback;
+
+}
+
+void TIM1_UP_TIM10_IRQn(void){
+
+    if(TIM1->SR & TIM_SR_UIF_Msk){
+        TIM1->SR &= ~TIM_SR_UIF_Msk;
+        if(tim_callback != 0){
+            tim_callback();
+        }
+    }
 }
