@@ -217,7 +217,7 @@ $(SYM): $(ELF)
 # Size summary
 ###############################################################################
 
-size:
+size: $(ELF)
 	@echo ""
 	@echo "========= SIZE SUMMARY ========="
 	$(SIZE) --format=berkeley $(ELF)

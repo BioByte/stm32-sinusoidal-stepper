@@ -55,3 +55,10 @@ void InitSystemClock(void){
     
 }
 
+// @brief Get the current system clock frequency
+uint32_t GetSystemClock(void){
+
+    return SystemCoreClock;
+
+}
+

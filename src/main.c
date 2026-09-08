@@ -5,6 +5,7 @@
 #include "gpio.h"
 #include "timer.h"
 #include "three_phase_control.h"
+#include "swave.h"
 
 int main (void){
 
@@ -13,6 +14,10 @@ int main (void){
     InitSystemTime();
 
     ThreePhaseControl_Init();
+    SWave_SetMotorFrequency(1); // Set motor frequency to 1 Hz
+    SWave_init();
+
+    ThreePhaseControl_Start();
 
 /* Código abaixo para testar os LEDs */
 

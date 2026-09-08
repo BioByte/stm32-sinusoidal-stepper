@@ -1,3 +1,6 @@
+#ifndef SYSTEM_CLOCK_H
+#define SYSTEM_CLOCK_H
+#include <stdint.h>
 /******************************************************************************
  * System Clock library Header file
  *
@@ -6,3 +9,7 @@
  ******************************************************************************/
 
 void InitSystemClock(void);
+
+uint32_t GetSystemClock(void);
+
+#endif // SYSTEM_CLOCK_H

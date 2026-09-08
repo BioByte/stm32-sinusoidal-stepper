@@ -1,3 +1,5 @@
+#ifndef TIMER_H
+#define TIMER_H
 #include "stm32f407xx.h"
 #include "stdbool.h"
 
@@ -166,5 +168,8 @@ void TIM_MasterOCDisable(const TIM_Handle_t *tim_handle);
 
 typedef void (*volatile TIM_Callback_t)(void);
 
+uint32_t TIM_GetPWMFrequency(const TIM_Handle_t *tim_handle);
+
 void TIM_CallbackRegister(TIM_Callback_t callback);
 
+#endif // TIMER_H

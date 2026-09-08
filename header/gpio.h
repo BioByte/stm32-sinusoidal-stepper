@@ -1,3 +1,5 @@
+#ifndef GPIO_H
+#define GPIO_H
 /******************************************************************************
  * GPIO driver library Header file
  *
@@ -89,3 +91,5 @@ bool GPIO_ReadPin(const gpio_config_t *config);
 void GPIO_ResetPin(const gpio_config_t *config);
 void GPIO_WritePin(const gpio_config_t *config, bool state);
 void GPIO_TogglePin(const gpio_config_t *config);
+
+#endif // GPIO_H

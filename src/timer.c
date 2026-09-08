@@ -1,5 +1,6 @@
 #include "stm32f407xx.h"
 #include "timer.h"
+#include "system_clock.h"
 
 TIM_Callback_t tim_callback = 0;
 
@@ -218,12 +219,34 @@ void TIM_CallbackRegister(TIM_Callback_t callback){
 
 }
 
-void TIM1_UP_TIM10_IRQn(void){
+uint32_t TIM_GetPWMFrequency(const TIM_Handle_t *tim_handle){
+
+    uint32_t pwm_frequency = 0;
+    if(tim_handle->base.timer_mode == TIMER_EDGE_ALIGNED_MODE){
+        pwm_frequency = GetSystemClock() / (tim_handle->base.prescaler + 1) / (tim_handle->base.period + 1);
+    }
+    else if(tim_handle->base.timer_mode == TIMER_CENTER_ALIGNED_MODE_1 || 
+            tim_handle->base.timer_mode == TIMER_CENTER_ALIGNED_MODE_2 || 
+            tim_handle->base.timer_mode == TIMER_CENTER_ALIGNED_MODE_3){
+        pwm_frequency = GetSystemClock() / (tim_handle->base.prescaler + 1) / (tim_handle->base.period + 1) / 2;
+    }
+    else{
+        // Invalid timer mode
+        return 0;
+    }
+
+    return pwm_frequency;
+
+}
+
+void TIM1_UP_TIM10_IRQHandler(void){
 
     if(TIM1->SR & TIM_SR_UIF_Msk){
         TIM1->SR &= ~TIM_SR_UIF_Msk;
         if(tim_callback != 0){
             tim_callback();
         }
+        else
+            return;
     }
 }
