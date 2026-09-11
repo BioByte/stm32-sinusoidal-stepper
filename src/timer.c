@@ -2,6 +2,14 @@
 #include "timer.h"
 #include "system_clock.h"
 
+/******************************************************************************
+ * Timer library Source file
+ *
+ * Timer base configuration, PWM, output compare, input capture, encoder interface 
+ * and interrupt handling.
+ * 
+ ******************************************************************************/
+
 TIM_Callback_t tim_callback = 0;
 
 void TIM_HWClockEnable(const TIM_Handle_t *tim_handle){
@@ -213,6 +221,8 @@ void TIM_MasterOCDisable(const TIM_Handle_t *tim_handle){
 
 }
 
+/// @brief Registers a callback function for timer interrupts
+/// @param callback 
 void TIM_CallbackRegister(TIM_Callback_t callback){
 
     tim_callback = callback;
@@ -239,6 +249,8 @@ uint32_t TIM_GetPWMFrequency(const TIM_Handle_t *tim_handle){
 
 }
 
+/// @brief Interrupt handler for TIM1 update events
+/// @param  
 void TIM1_UP_TIM10_IRQHandler(void){
 
     if(TIM1->SR & TIM_SR_UIF_Msk){

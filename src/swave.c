@@ -1,29 +1,53 @@
 #include "three_phase_control.h"
 #include "swave.h"
 
+/******************************************************************************
+ * Sine Wave library Source file
+ *
+ * Provides basic Sine Wave functionality.
+ *
+ * This library is responsible only for configuring the sine wave parameters.
+ ******************************************************************************/
+
+ /// @brief Number of bits used for the LUT index
 const uint16_t LUT_INDEX_BITS = 11U;
 
+/// @brief Number of bits used for the LUT index shift
 const uint32_t LUT_INDEX_SHIFT = 32U - LUT_INDEX_BITS;
 
+/// @brief Base value for 32-bit multiplication
 const uint16_t MULTIPLIER_32U_BASE = 32U;
 
+/// @brief Maximum count value for uint32_t
 const uint32_t MAX_COUNT = UINT32_MAX;
 
+/// @brief Phase increment for 120 degrees
 const uint32_t PHASE_120 = (MAX_COUNT / 3U);
 
+/// @brief Phase increment for 240 degrees
 const uint32_t PHASE_240 = (2U * PHASE_120);
 
+/// @brief Phase increment value calculated based on the desired frequency
 volatile uint32_t phase_increment = 0;
 
+/// @brief Phase accumulator value that keeps track of the current phase position
 volatile uint32_t phase_accumulator = 0;
 
+/// @brief Calculates the phase increment based on the desired frequency
+/// @param frequency_hz 
 void SWave_CalculatePhaseIncrement(uint32_t frequency_hz);
 
+/// @brief Updates the phase accumulator
+/// @param  
 void SWave_UpdatePhaseAccumulator(void);
 
+/// @brief Updates the phase compare values
+/// @param  
 void SWave_UpdatePhaseCompareValues(void);
 
-void SWave_CallbackHandler(void);
+/// @brief Registers the callback function for periodic phase updates
+/// @param  
+void SWave_PeriodicPhaseUpdate(void);
 
 /** Generated using Dr LUT - Free Lookup Table Generator
   * https://github.com/ppelikan/drlut
@@ -291,7 +315,7 @@ static const uint16_t lut[] = {
  1639, 1644, 1649, 1654, 1659, 1665, 1670, 1675 };
 
 
-void SWave_SetMotorFrequency(uint32_t motor_frequency){
+void SWave_SetFrequency(uint32_t motor_frequency){
 
     SWave_CalculatePhaseIncrement(motor_frequency);
 
@@ -325,21 +349,17 @@ void SWave_UpdatePhaseCompareValues(void){
 
 }
 
-void SWave_CallbackHandler(void){
+void SWave_PeriodicPhaseUpdate(void){
 
+    /// Update the phase accumulator and compare values
     SWave_UpdatePhaseAccumulator();
     SWave_UpdatePhaseCompareValues();
 
 }
 
-void SWave_CallbackRegister(void){
-
-    ThreePhaseControl_RegisterCallback(SWave_CallbackHandler);
-
-}
-
 void SWave_init(void){
 
-    SWave_CallbackRegister();
+    /// Initialize the phase accumulator and increment
+    ThreePhaseControl_RegisterCallback(SWave_PeriodicPhaseUpdate);
 
 }

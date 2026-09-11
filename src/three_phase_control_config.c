@@ -2,13 +2,21 @@
 #include "timer.h"
 #include "gpio.h"
 
+/******************************************************************************
+ * Three-Phase Control Configuration Source file
+ * 
+ * This library is responsible to configure the GPIO and PWM parameters to generate a sync 
+ * three phase PWM signal 
+ ******************************************************************************/
+
+/// @brief Array of three phase channels for each UPHASE, VPHASE, and WPHASE
 const three_phase_channels_t PhaseChannels = {
 
     .ch = {TIM_CHANNEL_1, TIM_CHANNEL_2, TIM_CHANNEL_3},
 
 };
 
-        /// @brief GPIO configuration for UPHASE (Phase A) output
+        /// @brief GPIO configuration for UPHASE (Phase U) output
         gpio_config_t GPIO_UPHASE = {
 
         .port = GPIOE,
@@ -20,7 +28,7 @@ const three_phase_channels_t PhaseChannels = {
         .af = GPIO_AF1,
 
     };
-
+        /// @brief GPIO configuration for UPHASE_N (Phase U complementary) output
         gpio_config_t GPIO_UPHASE_N = {
 
         .port = GPIOE,
@@ -32,7 +40,7 @@ const three_phase_channels_t PhaseChannels = {
         .af = GPIO_AF1,
 
     };
-
+        /// @brief GPIO configuration for VPHASE (Phase V) output
         gpio_config_t GPIO_VPHASE = {
 
         .port = GPIOE,
@@ -44,7 +52,7 @@ const three_phase_channels_t PhaseChannels = {
         .af = GPIO_AF1,
 
     };
-
+        /// @brief GPIO configuration for VPHASE_N (Phase V complementary) output
         gpio_config_t GPIO_VPHASE_N = {
 
         .port = GPIOE,
@@ -56,7 +64,7 @@ const three_phase_channels_t PhaseChannels = {
         .af = GPIO_AF1,
 
     };
-
+        /// @brief GPIO configuration for WPHASE (Phase W) output
         gpio_config_t GPIO_WPHASE = {
 
         .port = GPIOE,
@@ -68,7 +76,7 @@ const three_phase_channels_t PhaseChannels = {
         .af = GPIO_AF1,
 
     };
-
+        /// @brief GPIO configuration for WPHASE_N (Phase W complementary) output
         gpio_config_t GPIO_WPHASE_N = {
 
         .port = GPIOE,
@@ -80,7 +88,7 @@ const three_phase_channels_t PhaseChannels = {
         .af = GPIO_AF1,
 
     };
-
+    /// @brief PWM handle for the three phase signals
     TIM_Handle_t PHASES_PWM_HANDLE = {
 
     .timer = TIM1,

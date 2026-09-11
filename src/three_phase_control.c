@@ -1,6 +1,12 @@
 #include "three_phase_control.h"
 #include "three_phase_control_config.h"
 
+/******************************************************************************
+ * Three-Phase Control Source file
+ *
+ * This library is responsible to control the PWM duty and Output Compare states
+ * 
+ ******************************************************************************/
 
 void ThreePhaseControl_Init(void){
 

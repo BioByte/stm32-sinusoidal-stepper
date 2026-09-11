@@ -3,6 +3,13 @@
 #include "stm32f407xx.h"
 #include "stdbool.h"
 
+/******************************************************************************
+ * Timer library Header file
+ *
+ * Timer base configuration, PWM, output compare, input capture, encoder interface 
+ * and interrupt handling.
+ * 
+ ******************************************************************************/
 
 /// @brief Center-aligned mode selection. Set CMS bits in TIMx_CR1 register
 typedef enum timer_mode{
@@ -119,6 +126,7 @@ typedef struct TIM_BDTR_Config{
 
 }TIM_BDTR_Config_t; 
 
+/// @brief Enum for TIM channels
 typedef enum TIM_Channel{
 
     TIM_CHANNEL_1,
@@ -128,14 +136,14 @@ typedef enum TIM_Channel{
 
 }TIM_Channel_t;
 
-
+/// @brief Structure to hold the configuration for each TIM channel
 typedef struct TIM_OC_Channel_Config{
 
     TIM_OC_Config_t channel[4];
 
 }TIM_OC_Channel_Config_t;
 
-
+/// @brief Structure to hold the configuration for a TIM peripheral
 typedef struct TIM_Handle{
 
     TIM_TypeDef *timer;
@@ -148,28 +156,55 @@ typedef struct TIM_Handle{
 
 }TIM_Handle_t;
 
+/// @brief Enables the hardware clock for the specified TIM peripheral
+/// @param tim_handle 
 void TIM_HWClockEnable(const TIM_Handle_t *tim_handle);
 
+/// @brief Initializes the base configuration for the specified TIM peripheral
+/// @param tim_handle 
 void TIM_BaseInit(const TIM_Handle_t *tim_handle);
 
+/// @brief Initializes the output compare configuration for the specified TIM channel
+/// @param tim_handle 
+/// @param channel 
 void TIM_OCInit(const TIM_Handle_t *tim_handle, TIM_Channel_t channel);
 
+/// @brief Initializes the break and dead time configuration for the specified TIM peripheral
+/// @param tim_handle 
 void TIM_BDTRInit(const TIM_Handle_t *tim_handle);
 
+/// @brief Starts the specified TIM peripheral
+/// @param tim_handle 
 void TIM_Start(const TIM_Handle_t *tim_handle);
 
+/// @brief Stops the specified TIM peripheral
+/// @param tim_handle 
 void TIM_Stop(const TIM_Handle_t *tim_handle);
 
+/// @brief Updates the compare value for the specified TIM channel
+/// @param tim_handle 
+/// @param channel 
+/// @param compare 
 void TIM_UpdateCompare(const TIM_Handle_t *tim_handle, TIM_Channel_t channel, uint16_t compare);
 
+/// @brief Enables the master output for the specified TIM peripheral
+/// @param tim_handle 
 void TIM_MasterOCEnable(const TIM_Handle_t *tim_handle);
 
+/// @brief Disables the master output for the specified TIM peripheral
+/// @param tim_handle 
 void TIM_MasterOCDisable(const TIM_Handle_t *tim_handle);
 
+/// @brief Typedef for a callback function that can be registered for TIM events
 typedef void (*volatile TIM_Callback_t)(void);
 
+/// @brief Gets the PWM frequency for the specified TIM peripheral
+/// @param tim_handle 
+/// @return PWM frequency in Hz
 uint32_t TIM_GetPWMFrequency(const TIM_Handle_t *tim_handle);
 
+/// @brief Registers a callback function for TIM events
+/// @param callback 
 void TIM_CallbackRegister(TIM_Callback_t callback);
 
 #endif // TIMER_H

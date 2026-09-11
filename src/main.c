@@ -14,7 +14,7 @@ int main (void){
     InitSystemTime();
 
     ThreePhaseControl_Init();
-    SWave_SetMotorFrequency(1); // Set motor frequency to 1 Hz
+    SWave_SetFrequency(1); // Set frequency to 1 Hz
     SWave_init();
 
     ThreePhaseControl_Start();
